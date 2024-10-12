@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './App.css';
+import './App.css'; // Import custom CSS for styling
 
 function App() {
-  const [newDayData, setNewDayData] = useState(Array(50).fill('')); // No default value
-  const [predictions, setPredictions] = useState(Array(50).fill(null)); // Empty prediction state for each port
+  const generateRandomData = () => Array.from({ length: 50 }, () => Math.floor(Math.random() * 1001));
+  const [newDayData, setNewDayData] = useState(generateRandomData());
+  const [predictions, setPredictions] = useState(Array(50).fill(null));
   const [error, setError] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date()); // Current date and time
-  const [predictionDate, setPredictionDate] = useState(new Date()); // Date to predict (starting tomorrow)
-  const [average, setAverage] = useState(null); // Average waiting time
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [predictionDate, setPredictionDate] = useState(new Date());
+  const [average, setAverage] = useState(null);
+  const [showWelcomePopup, setShowWelcomePopup] = useState(true); // Control the welcome pop-up visibility
 
   // Update current time every second
   useEffect(() => {
@@ -34,32 +36,23 @@ function App() {
       setError('');
       setPredictions(Array(50).fill(null)); // Clear previous predictions
 
-      // Convert input data to numbers
       const inputData = newDayData.map((value) => parseFloat(value));
-
-      // Validate input data
       if (inputData.some(isNaN)) {
         setError('Please enter valid numerical values for all ports.');
         return;
       }
 
-      // Send POST request to the API
       const response = await axios.post('http://127.0.0.1:5000/predict', {
         new_day_data: inputData,
       });
 
-      // Update the predictions state with the result
       const predictedValues = response.data.predicted_waiting_times;
       setPredictions(predictedValues);
-
-      // Use predicted values as the new inputs for the next round
       setNewDayData(predictedValues.map((pred) => pred.toFixed(2)));
 
-      // Calculate the average of the predicted values
       const avg = predictedValues.reduce((sum, val) => sum + val, 0) / predictedValues.length;
       setAverage(avg);
 
-      // Update prediction date to the next day (increment by 1 day)
       const nextDate = new Date(predictionDate);
       nextDate.setDate(predictionDate.getDate() + 1);
       setPredictionDate(nextDate);
@@ -73,15 +66,15 @@ function App() {
     if (average === null) return '';
 
     if (value <= average * 0.5) {
-      return 'deep-green'; // Way below average
+      return 'deep-green';
     } else if (value < average) {
-      return 'light-green'; // Below average
+      return 'light-green';
     } else if (value >= average * 1.5) {
-      return 'deep-red'; // Way above average
+      return 'deep-red';
     } else if (value > average) {
-      return 'light-red'; // Above average
+      return 'light-red';
     } else {
-      return ''; // Default color
+      return '';
     }
   };
 
@@ -98,6 +91,16 @@ function App() {
         )}
       </header>
 
+      {showWelcomePopup && (
+        <div className="welcome-popup">
+          <div className="welcome-content">
+            <h2>Welcome to the PSA ports waiting time prediction website!</h2>
+            <h3>Please input waiting time of each port today and click "Predict Next Day" to view the out come!</h3>
+            <button className="close-button" onClick={() => setShowWelcomePopup(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
       <div className="form-container">
         {newDayData.map((value, index) => (
           <div key={index} className={`port-input ${getBoxColor(parseFloat(value))}`}>
@@ -109,7 +112,6 @@ function App() {
               className="input-field"
               placeholder="Enter waiting time"
             />
-            {/* Display prediction beside the input field */}
             {predictions[index] !== null && (
               <span className="prediction-result">
                 Prediction: {predictions[index].toFixed(2)}

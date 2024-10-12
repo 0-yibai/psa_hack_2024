@@ -125,7 +125,7 @@ def predict():
         X_new = np.expand_dims(updated_historical_data_scaled, axis=0)
 
         # Make prediction
-        prediction_scaled = model.predict([X_new, adj_new])  # Shape: (1, num_ports)
+        prediction_scaled = model.predict([X_new, adj_new])
         predicted_waiting_times = scaler.inverse_transform(prediction_scaled).flatten()
 
         # Update historical data file
