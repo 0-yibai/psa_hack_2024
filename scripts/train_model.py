@@ -1,4 +1,3 @@
-# Import Necessary Libraries
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -74,10 +73,10 @@ lstm_units = 64
 gnn_units = 64
 
 # Ensure the model directory exists
-os.makedirs('psa_hack_2024/model/', exist_ok=True)
+os.makedirs('../model/', exist_ok=True)
 
 # Load Waiting Times from CSV
-waiting_times_df = pd.read_csv('psa_hack_2024/data/waiting_times.csv', header=None)
+waiting_times_df = pd.read_csv('data/waiting_times.csv', header=None)
 
 # Convert to NumPy Array
 data = waiting_times_df.values
@@ -87,7 +86,7 @@ scaler = StandardScaler()
 data_scaled = scaler.fit_transform(data)
 
 # Save the fitted scaler to 'scaler.pkl'
-with open('psa_hack_2024/model/scaler.pkl', 'wb') as f:
+with open('model/scaler.pkl', 'wb') as f:
     pickle.dump(scaler, f)
 
 # Create Input Sequences and Targets
@@ -98,7 +97,7 @@ for i in range(num_samples_seq):
     y[i] = data_scaled[i + time_steps]    # Next day
 
 # Load Adjacency Matrix from CSV
-adjacency_df = pd.read_csv('psa_hack_2024/data/port_relationships.csv', header=None)
+adjacency_df = pd.read_csv('data/port_relationships.csv', header=None)
 
 # Convert to NumPy Array
 adjacency_matrix = adjacency_df.values
@@ -171,7 +170,7 @@ model.summary()
 
 # Define Callbacks for Early Stopping and Model Checkpointing
 early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-checkpoint = ModelCheckpoint('psa_hack_2024/model/best_model_custom_gnn.keras', monitor='val_loss', save_best_only=True)
+checkpoint = ModelCheckpoint('model/best_model_custom_gnn.keras', monitor='val_loss', save_best_only=True)
 
 # Fit the Model
 history = model.fit(

@@ -121,3 +121,38 @@ html, body, #root, .App {
   color: red;
   margin-top: 20px;
 }
+
+/* Pop-up styling */
+.welcome-popup {
+  position: fixed; /* Fixes the pop-up in the middle of the screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the pop-up is on top of other content */
+}
+
+.welcome-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+}
+
+.close-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}

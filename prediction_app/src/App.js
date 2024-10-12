@@ -95,7 +95,7 @@ function App() {
         <div className="welcome-popup">
           <div className="welcome-content">
             <h2>Welcome to the PSA ports waiting time prediction website!</h2>
-            <h3>Please input waiting time of each port today and click "Predict Next Day" to view the out come!</h3>
+            <h3>Please input waiting time of each port today and click "Predict Next Day" to view the out</h3>
             <button className="close-button" onClick={() => setShowWelcomePopup(false)}>Close</button>
           </div>
         </div>
