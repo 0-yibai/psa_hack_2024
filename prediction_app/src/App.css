@@ -4,7 +4,12 @@ html, body, #root, .App {
   margin: 0;
   padding: 0;
   font-family: 'Arial', sans-serif;
-  background-color: #f0f8ff; /* Light background color */
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f8ff;
 }
 
 .App-header {
@@ -12,17 +17,6 @@ html, body, #root, .App {
   padding: 20px;
   color: white;
   text-align: center;
-}
-
-.App-title {
-  margin: 0;
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-
-.App-description {
-  margin: 10px 0 20px 0;
-  font-size: 1.2rem;
 }
 
 .form-container {
@@ -39,12 +33,15 @@ html, body, #root, .App {
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
 }
 
 .port-label {
-  display: block;
-  margin-bottom: 5px;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .input-field {
@@ -53,6 +50,13 @@ html, body, #root, .App {
   border: 2px solid #007bff;
   border-radius: 4px;
   font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.prediction-result {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #007bff;
 }
 
 .submit-button {
@@ -74,28 +78,4 @@ html, body, #root, .App {
 .error-message {
   color: red;
   margin-top: 20px;
-}
-
-.predictions-container {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.predictions-title {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.predictions-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.prediction-item {
-  padding: 10px 0;
-  font-size: 1.1rem;
-  color: #007bff;
 }

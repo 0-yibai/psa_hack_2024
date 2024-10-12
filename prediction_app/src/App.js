@@ -4,7 +4,7 @@ import './App.css'; // Import custom CSS for styling
 
 function App() {
   const [newDayData, setNewDayData] = useState(Array(50).fill('')); // No default value
-  const [predictions, setPredictions] = useState(null);
+  const [predictions, setPredictions] = useState(Array(50).fill(null)); // Empty prediction state for each port
   const [error, setError] = useState('');
 
   const handleInputChange = (index, value) => {
@@ -16,7 +16,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       setError('');
-      setPredictions(null);
+      setPredictions(Array(50).fill(null)); // Clear previous predictions
 
       // Convert input data to numbers
       const inputData = newDayData.map((value) => parseFloat(value));
@@ -32,6 +32,7 @@ function App() {
         new_day_data: inputData,
       });
 
+      // Update the predictions state with the result
       setPredictions(response.data.predicted_waiting_times);
     } catch (err) {
       console.error(err);
@@ -47,7 +48,7 @@ function App() {
           Enter the waiting times for the new day for each port.
         </p>
       </header>
-      
+
       <div className="form-container">
         {newDayData.map((value, index) => (
           <div key={index} className="port-input">
@@ -59,6 +60,12 @@ function App() {
               className="input-field"
               placeholder="Enter waiting time"
             />
+            {/* Display prediction beside the input field */}
+            {predictions[index] !== null && (
+              <span className="prediction-result">
+                Prediction: {predictions[index].toFixed(2)}
+              </span>
+            )}
           </div>
         ))}
       </div>
@@ -66,21 +73,8 @@ function App() {
       <button className="submit-button" onClick={handleSubmit}>
         Predict Next Day
       </button>
-      
+
       {error && <p className="error-message">{error}</p>}
-      
-      {predictions && (
-        <div className="predictions-container">
-          <h2 className="predictions-title">Predicted Waiting Times for the Next Day:</h2>
-          <ul className="predictions-list">
-            {predictions.map((value, index) => (
-              <li key={index} className="prediction-item">
-                Port {index + 1}: {value.toFixed(2)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
