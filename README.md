@@ -63,6 +63,7 @@ This section will help you set up and run the project on your local machine.
    ```bash
    cd prediction_app
    npm install
+   npm install axios
    ```
 
 3. Install dependencies for the back-end:
