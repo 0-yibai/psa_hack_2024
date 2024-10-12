@@ -11,58 +11,6 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
 import os
-
-# Define Custom Layers
-class TransposeLayer(Layer):
-    def __init__(self, perm, **kwargs):
-        super(TransposeLayer, self).__init__(**kwargs)
-        self.perm = perm
-
-    def call(self, inputs):
-        return tf.transpose(inputs, perm=self.perm)
-
-    def get_config(self):
-        config = super(TransposeLayer, self).get_config()
-        config.update({"perm": self.perm})
-        return config
-
-class ReshapeLayer(Layer):
-    def __init__(self, target_shape, **kwargs):
-        super(ReshapeLayer, self).__init__(**kwargs)
-        self.target_shape = target_shape
-
-    def call(self, inputs):
-        return tf.reshape(inputs, self.target_shape)
-
-    def get_config(self):
-        config = super(ReshapeLayer, self).get_config()
-        config.update({"target_shape": self.target_shape})
-        return config
-
-class CustomMessagePassing(Layer):
-    def __init__(self, units, activation=None, **kwargs):
-        super(CustomMessagePassing, self).__init__(**kwargs)
-        self.units = units
-        self.activation = tf.keras.activations.get(activation)
-        self.self_dense = Dense(units)
-        self.neighbor_dense = Dense(units)
-
-    def call(self, inputs):
-        features, adjacency = inputs
-        self_features = self.self_dense(features)
-        neighbor_features = tf.matmul(adjacency, self.neighbor_dense(features))
-        combined_features = self_features + neighbor_features
-        if self.activation:
-            combined_features = self.activation(combined_features)
-        return combined_features
-
-    def get_config(self):
-        config = super(CustomMessagePassing, self).get_config()
-        config.update({
-            "units": self.units,
-            "activation": tf.keras.activations.serialize(self.activation),
-        })
-        return config
     
 def predict_next_day(new_day_data, historical_data_path='psa_hack_2024/data/waiting_times_updated.csv', 
                    model_path='psa_hack_2024/model/best_model_custom_gnn.keras', scaler_path='psa_hack_2024/model/scaler.pkl',
@@ -90,6 +38,56 @@ def predict_next_day(new_day_data, historical_data_path='psa_hack_2024/data/wait
     - predicted_waiting_times: ndarray of shape (num_ports,)
         The predicted waiting times for the next day for each port.
     """
+    class TransposeLayer(Layer):
+        def __init__(self, perm, **kwargs):
+            super(TransposeLayer, self).__init__(**kwargs)
+            self.perm = perm
+
+        def call(self, inputs):
+            return tf.transpose(inputs, perm=self.perm)
+
+        def get_config(self):
+            config = super(TransposeLayer, self).get_config()
+            config.update({"perm": self.perm})
+            return config
+
+    class ReshapeLayer(Layer):
+        def __init__(self, target_shape, **kwargs):
+            super(ReshapeLayer, self).__init__(**kwargs)
+            self.target_shape = target_shape
+
+        def call(self, inputs):
+            return tf.reshape(inputs, self.target_shape)
+
+        def get_config(self):
+            config = super(ReshapeLayer, self).get_config()
+            config.update({"target_shape": self.target_shape})
+            return config
+
+    class CustomMessagePassing(Layer):
+        def __init__(self, units, activation=None, **kwargs):
+            super(CustomMessagePassing, self).__init__(**kwargs)
+            self.units = units
+            self.activation = tf.keras.activations.get(activation)
+            self.self_dense = Dense(units)
+            self.neighbor_dense = Dense(units)
+
+        def call(self, inputs):
+            features, adjacency = inputs
+            self_features = self.self_dense(features)
+            neighbor_features = tf.matmul(adjacency, self.neighbor_dense(features))
+            combined_features = self_features + neighbor_features
+            if self.activation:
+                combined_features = self.activation(combined_features)
+            return combined_features
+
+        def get_config(self):
+            config = super(CustomMessagePassing, self).get_config()
+            config.update({
+                "units": self.units,
+                "activation": tf.keras.activations.serialize(self.activation),
+            })
+            return config
     
     # Step 1: Load the trained model and scaler
     model = load_model(model_path, custom_objects={
