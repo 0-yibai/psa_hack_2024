@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css'; // Import custom CSS for styling
 
 function App() {
-  const [newDayData, setNewDayData] = useState(Array(50).fill(1000)); // Default value of 1000 for each port
+  const [newDayData, setNewDayData] = useState(Array(50).fill('')); // No default value
   const [predictions, setPredictions] = useState(null);
   const [error, setError] = useState('');
 
@@ -44,7 +44,7 @@ function App() {
       <header className="App-header">
         <h1 className="App-title">Port Waiting Time Prediction</h1>
         <p className="App-description">
-          Enter the waiting times for the new day for each port (default is 1000).
+          Enter the waiting times for the new day for each port.
         </p>
       </header>
       
@@ -57,6 +57,7 @@ function App() {
               value={value}
               onChange={(e) => handleInputChange(index, e.target.value)}
               className="input-field"
+              placeholder="Enter waiting time"
             />
           </div>
         ))}
