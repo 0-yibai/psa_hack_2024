@@ -27,13 +27,7 @@ class Utils():
                 p = 0.9
         arr = arr / np.sum(arr)
         return arr
-    
-    @staticmethod
-    def clear_diagonal(M, len):
-        for i in range(len):
-            M[i][i] = 0
-            M[i] = M[i] / np.sum(M[i])
-        return M
+
 
 def get_travel_days(dist, src, dest):
     '''

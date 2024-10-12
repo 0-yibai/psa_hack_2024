@@ -70,10 +70,13 @@ for j in range(TOTAL_PORTS):
 data = copy.deepcopy(exports)
 
 # Generate distance between any 2 ports
+# dist is a symmetric matrix with zero diagonal
 dist = np.zeros((TOTAL_PORTS, TOTAL_PORTS))
 for i in range(TOTAL_PORTS):
-    for j in range(TOTAL_PORTS):
+    for j in range(i, TOTAL_PORTS):
         dist[i][j] = random.randint(5, 20)
+        dist[j][i] = dist[i][j]
+    dist[i][i] = 0
 
 # Generate the correlation matrix, representing the likelihood of an item
 # getting shipped from one port to another.
