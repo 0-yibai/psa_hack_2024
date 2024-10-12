@@ -2,11 +2,11 @@ import numpy as np
 import random
 
 TOTAL_DAYS = 1000
-TOTAL_PORTS = 10
+TOTAL_PORTS = 50
 
-INITIAL_SHIPS = 600
-MIN_CAPACITY = 50
-MAX_CAPACITY = 100
+INITIAL_SHIPS = 3000
+MIN_CAPACITY = 80
+MAX_CAPACITY = 200
 MAX_CAPACITY_ERROR = 10
 MIN_DIST = 5
 MAX_DIST = 20
@@ -61,8 +61,8 @@ def get_closure_period():
 
 def port_close(data, dist, corr, day, port):
     closure_period = random.randint(1, 10)
+    intake = capacity[port] + random.randint(-MAX_CAPACITY_ERROR, MAX_CAPACITY_ERROR)
     for i in range(closure_period):
-        intake = capacity[port] + random.randint(-MAX_CAPACITY_ERROR, MAX_CAPACITY_ERROR)
         data[day+i] += intake
 
         # simulate aftermath

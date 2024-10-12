@@ -53,7 +53,7 @@ def ship(exports, data, dist, corr, i, j):
 
 
 TOTAL_DAYS = 1000
-TOTAL_PORTS = 10
+TOTAL_PORTS = 50
 
 MIN_EXPORT = 100
 MAX_EXPORT = 600
@@ -97,11 +97,12 @@ for i in range(TOTAL_DAYS // 2, TOTAL_DAYS):
     if data[i][j] < 0:
         data[i][j] = 0
 
-port_close(data, dist, corr, 170, 3)
-port_close(data, dist, corr, 300, 7)
-port_close(data, dist, corr, 800, 1)
+port_close(data, dist, corr, 170, 13)
+port_close(data, dist, corr, 300, 47)
+port_close(data, dist, corr, 700, 21)
 port_close(data, dist, corr, 830, 2)
 
 
 
 np.savetxt("data.csv", data, delimiter=',')
+np.savetxt("dist.csv", dist, delimiter=',')
