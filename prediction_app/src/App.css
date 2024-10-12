@@ -23,9 +23,9 @@ html, body, #root, .App {
   font-size: 2.5rem;
 }
 
-.prediction-date {
-  font-size: 1.8rem; /* Make the predicted date larger */
-  font-weight: bold; /* Bold the prediction date */
+.current-date, .prediction-date {
+  font-size: 1.8rem; /* Larger date and prediction date */
+  font-weight: bold;
   margin-top: 10px;
 }
 

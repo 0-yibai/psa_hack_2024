@@ -50,6 +50,9 @@ function App() {
       // Update the predictions state with the result
       setPredictions(response.data.predicted_waiting_times);
 
+      // Use predicted values as the new inputs for next round
+      setNewDayData(response.data.predicted_waiting_times.map((pred) => pred.toFixed(2)));
+
       // Update prediction date to the next day (increment by 1 day)
       const nextDate = new Date(predictionDate);
       nextDate.setDate(predictionDate.getDate() + 1);
@@ -64,7 +67,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1 className="App-title">Port Waiting Time Prediction</h1>
-        <p>Current Date and Time: {currentTime.toLocaleDateString()} {currentTime.toLocaleTimeString()}</p>
+        <p className="current-date">Current Date and Time: {currentTime.toLocaleDateString()} {currentTime.toLocaleTimeString()}</p>
         <p className="prediction-date">Predicting for: {predictionDate.toLocaleDateString()}</p>
       </header>
 
