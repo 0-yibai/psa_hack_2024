@@ -23,8 +23,8 @@ html, body, #root, .App {
   font-size: 2.5rem;
 }
 
-.current-date, .prediction-date {
-  font-size: 1.8rem; /* Larger date and prediction date */
+.current-date, .prediction-date, .average-waiting-time {
+  font-size: 1.8rem;
   font-weight: bold;
   margin-top: 10px;
 }
@@ -47,6 +47,24 @@ html, body, #root, .App {
   flex-direction: column;
   align-items: center;
   width: 150px;
+}
+
+.light-green {
+  background-color: #d4edda;
+}
+
+.deep-green {
+  background-color: #28a745;
+  color: white;
+}
+
+.light-red {
+  background-color: #f8d7da;
+}
+
+.deep-red {
+  background-color: #dc3545;
+  color: white;
 }
 
 .port-label {
