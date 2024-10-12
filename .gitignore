@@ -33,3 +33,5 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+
+data/waiting_times_updated.csv
